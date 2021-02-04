@@ -1,10 +1,6 @@
 import React from "react"
 
 // LOGIC ===========================================================================================
-// cell = {
-//   symbol : "A",
-//   status : Status.Open,
-// }
 
 export let Status = {
   Open: "Open",
@@ -32,10 +28,5 @@ export function View({cell, onClick}) {
 }
 
 export function classByStatus(status) {
-  switch (status) {
-      case Status.Failed: return 'faild'
-      case Status.Done: return 'done'
-      case Status.Open: return 'open'
-      case Status.Closed: return 'closed'
-  }
+  return status.toLowerCase()
 }

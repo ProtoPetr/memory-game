@@ -5,7 +5,7 @@ import * as Board from '../components/Board'
 
 export default function Layout() {
   return <>
-  <GameView/>
+    <GameView/>
   </>
 }
 
@@ -19,12 +19,12 @@ let Status = {
 }
 
 let initialBoard = [
-  {symbol: 'A', status: Cell.Status.Closed},
+  {symbol: 'A', status: Cell.Status.Open},
   {symbol: 'A', status: Cell.Status.Closed},
   {symbol: 'B', status: Cell.Status.Closed},
-  {symbol: 'B', status: Cell.Status.Closed},
+  {symbol: 'B', status: Cell.Status.Open},
   {symbol: 'C', status: Cell.Status.Closed},
-  {symbol: 'C', status: Cell.Status.Closed},
+  {symbol: 'C', status: Cell.Status.Open},
     ]
 
 let startGame = (state) => ({
@@ -37,37 +37,47 @@ let openCell = R.curry((i, state) => ({
   board: Board.setStatusAt(i, Cell.Status.Open, state.board),
 }))
 
+let canOpenCell = R.curry((i, state) => {
+  return Board.canOpenAt(i, state.board)
+})
+
 let succeedStep = (state) => ({
   ...state,
-  board: Board.setStatusesBy(Cell.isOpen, Cell.Status.Done, state.board)
+  board: Board.setStatusesBy(Cell.isOpen, Cell.Status.Done, state.board),
 })
 
 let failStep1 = (state) => ({
   ...state,
-  board: Board.setStatusesBy(Cell.isOpen, Cell.Status.Failed, state.board)
+  board: Board.setStatusesBy(Cell.isOpen, Cell.Status.Failed, state.board),
 })
 
 let failStep2 = (state) => ({
   ...state,
-  board: Board.setStatusesBy(Cell.isFailed, Cell.Status.Closed, state.board)
+  board: Board.setStatusesBy(Cell.isFailed, Cell.Status.Closed, state.board),
 })
 
 function GameView() {
   let [state, setState] = useState({
     board: initialBoard,
-    status: Status.Running,
+    status: Status.Stopped,
   })
 
-let {board, status} = state
+  let {board, status} = state
 
-function handleStartingClick(i) {
+  function handleStartingClick(i) {
   if (status != Status.Running) {
     setState(startGame)
   }
 }
 
+function handleRunningClick(i) {
+  if (status == Status.Running && canOpenCell(i, state)) {
+    setState(openCell(i))
+  }
+}
+
 // Board handling
-useEffect(_ =>{
+useEffect(_ => {
   if (Board.areOpensEqual(board)) {
     setState(succeedStep)
   } else if (Board.areOpensDifferent(board)) {
@@ -79,19 +89,19 @@ useEffect(_ =>{
 }, [board])
 
   return <div onClick={handleStartingClick}>
-    <ScreenBoxView status={status} board={board}/>
+    <ScreenBoxView status={status} board={board} onClickAt={handleRunningClick}/>
   </div>
 }
 
 function ScreenBoxView({status, board}) {
   switch (status) {
     case Status.Running:
-      return <Board.BoardView board = {board} onClickAt={() => null}/>
+      return <Board.BoardView board={board} onClickAt={() => null}/>
 
     case Status.Stopped:
       return <Board.ScreenView className='gray'>
         <div>
-          <h1>Memory game</h1>
+          <h1>Jet Ruby test game</h1>
           <p className='small' style={{textAlign: 'center'}}>Click anywhere to start!</p>
         </div>
       </Board.ScreenView>

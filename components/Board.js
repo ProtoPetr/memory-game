@@ -1,8 +1,7 @@
 import * as R from 'rambda'
-import { L } from 'rambda/_ts-toolbelt/src/ts-toolbelt'
 import React from 'react'
 import * as Cell from './Cell'
-import {allEquals} from './lib/index.js'
+import * as L from './lib/index.js'
 
 // LOGIC ===========================================================================================
 // let cell1 = ...
@@ -17,15 +16,15 @@ export let setStatusAt = R.curry((i, status, board) => {
 })
 
 export let setStatusesBy = R.curry((predFn, status, board) => {
-    return R.map(cell => predFn(cell) ? [...cell, status] : cell, board)
+    return R.map(cell => predFn(cell) ? {...cell, status} : cell, board)
 })
 
 export let getStatusesBy = R.curry((predFn, board) => {
-    return R.chain(cell => predFn(cell) ? [...cell.status] : [], board)
+    return R.chain(cell => predFn(cell) ? [cell.status] : [], board)
 })
 
 export let getSymbolsBy = R.curry((predFn, board) => {
-    return R.chain(cell => predFn(cell) ? [...cell.symbol] : [], board)
+    return R.chain(cell => predFn(cell) ? [cell.symbol] : [], board)
 })
 
 export let canOpenAt = R.curry((i, board) => {
