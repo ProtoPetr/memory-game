@@ -35,12 +35,27 @@ export let canOpenAt = R.curry((i, board) => {
 
 export let areOpensEqual = (board) => {
     let openSymbols = getSymbolsBy(Cell.isOpen, board)
-    return openSymbols.length >=2 && L.allEquals(openSymbols)
+    return openSymbols.length ==2 && L.allEquals(openSymbols)
 }
 
 export let areOpensDifferent = (board) => {
     let openSymbols = getSymbolsBy(Cell.isOpen, board)
     return openSymbols.length >=2 && !L.allEquals(openSymbols)
+}
+
+let charCodeA = 'A'.charCodeAt(0)
+
+export let makeRandom = (m, n) => {
+  if ((m * n / 2) > 26) throw new Error('too big')
+  if (m * n % 2) throw new Error('must be even')
+
+  return R.pipe(
+    () => R.range(0, m * n / 2),
+    R.map(i => String.fromCharCode(i + charCodeA)),
+    R.chain(x => [x, x]),
+    L.shuffle,
+    R.map(symbol => ({symbol, status: Cell.Status.Closed})),
+  )()
 }
 
 // VIEW ============================================================================================
