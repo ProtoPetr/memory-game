@@ -35,7 +35,7 @@ export let canOpenAt = R.curry((i, board) => {
 
 export let areOpensEqual = (board) => {
     let openSymbols = getSymbolsBy(Cell.isOpen, board)
-    return openSymbols.length ==2 && L.allEquals(openSymbols)
+    return openSymbols.length == 2 && L.allEquals(openSymbols)
 }
 
 export let areOpensDifferent = (board) => {

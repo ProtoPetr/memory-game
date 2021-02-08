@@ -11,7 +11,7 @@ let Status = {
   Won: 'Won',
 }
 
-let startGame = (state) => ({
+let startGame = () => ({
   board: Board.makeRandom(4, 4),
   status: Status.Running,
 })
@@ -30,6 +30,11 @@ let succeedStep = (state) => ({
   board: Board.setStatusesBy(Cell.isOpen, Cell.Status.Done, state.board),
 })
 
+let disappearStep = (state) => ({
+  ...state,
+  board: Board.setStatusesBy(Cell.isDone, Cell.Status.Disappear, state.board),
+})
+
 let failStep1 = (state) => ({
   ...state,
   board: Board.setStatusesBy(Cell.isOpen, Cell.Status.Failed, state.board),
@@ -41,7 +46,7 @@ let failStep2 = (state) => ({
 })
 
 let hasWinningCond = (state) => (
-  R.filter(Cell.isDone, state.board).length == state.board.length
+  R.filter(Cell.isDisappear, state.board).length == state.board.length
 )
 
 let setStatus = R.curry((status, state) => ({...state, status}))
@@ -79,6 +84,9 @@ useEffect(_ =>{
 useEffect(_ => {
   if (Board.areOpensEqual(board)) {
     setState(succeedStep)
+    setTimeout(_ => {
+      setState(disappearStep)
+    }, 500)
   } else if (Board.areOpensDifferent(board)) {
     setState(failStep1)
     setTimeout(_ => {
