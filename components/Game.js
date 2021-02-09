@@ -125,4 +125,3 @@ function ScreenBoxView({status, board, onClickAt}) {
 
 
 
-

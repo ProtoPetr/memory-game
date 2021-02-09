@@ -30,7 +30,7 @@ export let isBlocking = (cell) => isOpen(cell) || isFailed(cell)
 export function View({cell, onClick}) {
   let {status, symbol} = cell
   return <div className={`cell ${classByStatus(status)}`} onClick={onClick}>
-    {status == (Status.Closed || Status.Disappear) ? "" : symbol}
+    {status == (Status.Closed) ? "" : symbol}
   </div>
 }
 

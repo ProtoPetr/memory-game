@@ -16,15 +16,18 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100px;
+    transition: 0.5s ease-out;
   }
   
   .cell.closed {
     cursor: pointer;
     background: darkgray;
+    transform: rotateY(-180deg);
   }
   
   .cell.open {
     background: #dcdcdc;
+    transform: rotateY(0deg);
   }
   
   .cell.done {
@@ -64,10 +67,6 @@ body {
 
   .screen.gray {
     background: #dcdcdc;
-  }
-
-  .screen.red {
-    background: #db8f8f;
   }
 
   .screen h1 {
