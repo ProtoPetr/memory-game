@@ -127,12 +127,23 @@ export function View() {
 }
 
 function StatusLineView({status, secondsLeft}) {
-  return <div className="status-line">
-    <div>{status == Status.Running ? ":)" : "Lets Go!"}</div>
-    <div className="timer">
-      {status == Status.Running && `Seconds left: ${secondsLeft}`}
+  return <>
+    <div className="status-line">
+      <div>{status == Status.Running ? ":)" : "Lets Go!"}</div>
+      <div className="timer">
+        {status == Status.Running && `Seconds left: ${secondsLeft}`}
+      </div>
     </div>
-  </div>
+    <style jsx>{`
+      .status-line {
+        color: gray;
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+    `}</style>
+  </>
 }
 
 
@@ -142,7 +153,7 @@ function ScreenBoxView({status, board, onClickAt}) {
       return <Board.BoardView board={board} onClickAt={onClickAt}/>
 
     case Status.Stopped:
-      return <Board.ScreenView className='gray'>
+      return <Board.ScreenView background={statusToBackground(status)}>
         <div style={{textAlign: 'center'}}>
           <h1>Memory game</h1>
           <p>Click anywhere to start!</p>
@@ -150,7 +161,7 @@ function ScreenBoxView({status, board, onClickAt}) {
       </Board.ScreenView>
 
     case Status.Won:
-      return <Board.ScreenView className='green'>
+      return <Board.ScreenView background={statusToBackground(status)}>
         <div style={{textAlign: 'center'}}>
           <h1>Victory!</h1>
           <p>Click anywhere to try again!</p>
@@ -158,12 +169,20 @@ function ScreenBoxView({status, board, onClickAt}) {
       </Board.ScreenView>
 
     case Status.Lost:
-      return <Board.ScreenView className='red'>
+      return <Board.ScreenView background={statusToBackground(status)}>
         <div style={{textAlign: 'center'}}>
           <h1>Defeat!</h1>
           <p>Click anywhere to try again!</p>
         </div>
       </Board.ScreenView>
+  }
+}
+
+function statusToBackground(status) {
+  switch (status) {
+    case Status.Won:  return "#a8db8f"
+    case Status.Lost: return "#db8f8f"
+    default:          return "#dcdcdc"
   }
 }
 

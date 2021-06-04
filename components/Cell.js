@@ -29,22 +29,34 @@ export let isBlocking = (cell) => isOpen(cell) || isFailed(cell)
 // VIEW ============================================================================================
 export function View({cell, onClick}) {
   let {status, symbol} = cell
-  return <div className={`cell ${classByStatus(status)}`} onClick={onClick}>
-    {status == (Status.Closed) ? "" : symbol}
-  </div>
+  return <>
+    <div className="cell" onClick={onClick}>
+      {status == (Status.Closed) ? "" : symbol}
+    </div>
+    <style jsx>{`
+      .cell {
+        font-size: 4rem;
+        background: gray;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100px;
+        background: ${statusToBackground(status)};
+        transition: 0.5s ease-out;
+        cursor: ${status == Status.Closed ? "pointer" : "auto"};
+        color: ${status == Status.Disappear ? "#ffffff" : "auto"};
+        transform: ${status == Status.Closed ? "rotateY(-180deg)" : "rotateY(0deg)"};
+      }
+    `}</style>
+  </>
 }
 
-export function classByStatus(status) {
+export function statusToBackground(status) {
   switch (status) {
-    case Status.Failed:
-      return 'failed'
-    case Status.Done:
-      return 'done'
-    case Status.Open:
-      return 'open'
-    case Status.Closed:
-      return 'closed'
-    case Status.Disappear:
-      return 'disappear'
+    case Status.Closed: return "#a9a9a9"
+    case Status.Open:   return "#dcdcdc"
+    case Status.Done:   return "#a8db8f"
+    case Status.Failed: return "#db8f8f"
+    case Status.Disappear: return "#ffffff"
   }
 }
