@@ -1,7 +1,7 @@
 import '../styles/reset.css'
 import '../styles/index.css'
 
-function App({ Component, pageProps }) {
+function App({Component, pageProps}) {
   return <div id='root'>
     <Component {...pageProps} />
   </div>

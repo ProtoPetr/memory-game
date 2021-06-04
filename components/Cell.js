@@ -36,10 +36,15 @@ export function View({cell, onClick}) {
 
 export function classByStatus(status) {
   switch (status) {
-    case Status.Failed:    return 'failed'
-    case Status.Done:      return 'done'
-    case Status.Open:      return 'open'
-    case Status.Closed:    return 'closed'
-    case Status.Disappear: return 'disappear'
+    case Status.Failed:
+      return 'failed'
+    case Status.Done:
+      return 'done'
+    case Status.Open:
+      return 'open'
+    case Status.Closed:
+      return 'closed'
+    case Status.Disappear:
+      return 'disappear'
   }
 }
