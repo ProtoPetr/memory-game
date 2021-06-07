@@ -1,4 +1,4 @@
-import React from "react"
+import * as React from "react"
 
 // LOGIC ===========================================================================================
 // cell = {
@@ -6,28 +6,48 @@ import React from "react"
 //   status : Status.Open,
 // }
 
-export let Status = {
-  Open: "Open",
-  Closed: "Closed",
-  Done: "Done",
-  Failed: "Failed",
-  Disappear: "Disappear",
+export enum Status {
+  Open, Closed, Done, Failed, Disappear
 }
 
-export let isOpen = (cell) => cell.status == Status.Open
+export type Cell = {
+  symbol : String
+  status : Status
+}
 
-export let isClosed = (cell) => cell.status == Status.Closed
+export type PredFn = (cell : Cell) => boolean
 
-export let isDone = (cell) => cell.status == Status.Done
+export let isOpen = (cell : Cell) : boolean => (
+    cell.status == Status.Open
+)
 
-export let isFailed = (cell) => cell.status == Status.Failed
+export let isClosed = (cell : Cell) : boolean => (
+    cell.status == Status.Closed
+)
 
-export let isDisappear = (cell) => cell.status == Status.Disappear
+export let isDone = (cell : Cell) : boolean => (
+    cell.status == Status.Done
+)
 
-export let isBlocking = (cell) => isOpen(cell) || isFailed(cell)
+export let isFailed = (cell : Cell) : boolean => (
+    cell.status == Status.Failed
+)
+
+export let isDisappear = (cell : Cell) : boolean => (
+    cell.status == Status.Disappear
+)
+
+export let isBlocking = (cell : Cell) : boolean => (
+    isOpen(cell) || isFailed(cell)
+)
 
 // VIEW ============================================================================================
-export function View({cell, onClick}) {
+type CellViewProps = {
+  cell : Cell,
+  onClick : (event : React.MouseEvent) => void,
+}
+
+export let View : React.FC<CellViewProps> = ({cell, onClick}) => {
   let {status, symbol} = cell
   return <>
     <div className="cell" onClick={onClick}>
@@ -51,7 +71,7 @@ export function View({cell, onClick}) {
   </>
 }
 
-export function statusToBackground(status) {
+export function statusToBackground(status : Status) : String {
   switch (status) {
     case Status.Closed: return "#a9a9a9"
     case Status.Open:   return "#dcdcdc"

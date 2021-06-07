@@ -1,6 +1,8 @@
+import * as React from "react";
+import {AppProps} from"next/app"
 import '../styles/reset.css'
 
-function App({Component, pageProps}) {
+function App({Component, pageProps} : AppProps) {
   return <>
     <div id="root">
       <Component {...pageProps} />

@@ -1,6 +1,6 @@
 import * as R from 'rambda'
 
-export function allEquals(xs) {
+export let allEquals = <A> (xs: A[]) : boolean => {
   // Vacuous truth
   if (xs.length < 2) {
     return true
@@ -9,25 +9,25 @@ export function allEquals(xs) {
   return R.all(R.equals(head), tail)
 }
 
-export let randomInt = R.curry((min, max) => {
+export let randomInt = (min : number) =>(max : number) : number => {
   return Math.floor(Math.random() * (max - min)) + min
-})
+}
 
-export let swap = R.curry((i1, i2, xs) => {
+export let swap = (i1 : number, i2 : number) => <A> (xs : A[]) => {
   let v1 = xs[i1]
   let v2 = xs[i2]
   return R.pipe(
     R.update(i1, v2),
     R.update(i2, v1)
   )(xs)
-})
+}
 
-export let shuffle = (xs) => {
+export let shuffle = <A> (xs : A[]) => {
   let counter = xs.length
   while (counter > 0) {
-    let index = randomInt(0, counter)
+    let index = randomInt(0)(counter)
     counter -= 1
-    xs = swap(index, counter, xs)
+    xs = swap(index, counter)(xs)
   }
   return xs
 }
